@@ -13,15 +13,19 @@ public class bmp{
       BufferedImage image = ImageIO.read(inputFile);
 
           // iterate through the image and reverse every pixel
-      BufferedImage reversedImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+      BufferedImage reversedImage = new BufferedImage(image.getWidth(), 
+		      image.getHeight(), BufferedImage.TYPE_INT_RGB);
       for(int i = 0; i < image.getWidth(); i++){
         for(int j = 0; j < image.getHeight(); j++){
-          reversedImage.setRGB(i, j, reverseRGB(image.getRGB(i, j)));
+	  // leave the first byte untouched, masked out the ones in 
+	  // the RGB bytes to get the negative
+	  reversedImage.setRGB(i, j, image.getRGB(i, j) ^ 0x00ffffff);
         }
       }
 
       // write the image
-      File outputFile = new File(args[0].substring(0, args[0].lastIndexOf(".bmp")) + "_reversed.bmp");
+      File outputFile = new File(args[0].substring(0, 
+			      args[0].lastIndexOf(".bmp")) + "_reversed.bmp");
       ImageIO.write(reversedImage, "bmp", outputFile);
 
       System.out.println("Done.");
@@ -32,18 +36,5 @@ public class bmp{
     }catch(ArrayIndexOutOfBoundsException e){
       System.out.println("Please enter the name of the file in command line.");
     }
-  }
-
-  /*
-    for each color, we get the negative by subtracting the value from the
-    maximum value for each color (255) and return it all in one int.
-    Since we are dealing with negative images, the transparency shouldn't
-    really matter so we just use the same transparency value.
-  */
-  private static int reverseRGB(int rgb){
-    int blue = 255 - (rgb & 0xff);
-    int green = (255 - ((rgb & 0xff00) >> 8)) << 8;
-    int red = (255 - ((rgb & 0xff0000) >> 16)) << 16;
-    return (rgb & 0xff000000) + red + green + blue;
   }
 }
