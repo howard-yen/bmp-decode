@@ -1,5 +1,5 @@
 # bmp-reverse
-bmp-reverse is a simple java file that turns takes in a BMP file and outputs the image in its negative image. 
+bmp-reverse is a simple java program that turns takes in a BMP file and outputs the image in its negative image. 
 
 ## Usage
 To use bmp-reverse, run the following in command line:
